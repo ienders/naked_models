@@ -1,0 +1,6 @@
+<h1>New <%= @model.class.name.humanize %> <%= link_to 'Back to list', { :action => 'index' }, :class => 'smaller' %></h1>
+
+<% form_for(@model_sym, @model, :url => { :action => 'create' }) do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'naked_model/form', :locals => { :f => f, :mod => @model, :model_name => @model_sym } %>
+<% end %>

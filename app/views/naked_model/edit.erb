@@ -1,0 +1,10 @@
+<h1>
+  Editing <%= @model_name.titleize %>
+  <%= link_to 'Back to list', { :action => 'index' }, :class => 'smaller' %>
+  <%= link_to 'Cancel edit', { :action => 'show', :id => @model.id }, :class => 'smaller' %>
+</h1>
+
+<% form_for(@model_sym, @model, :url => { :action => 'update' }, :html => { :method => :put }) do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'naked_model/form', :locals => { :f => f, :mod => @model, :model_name => @model_sym } %>
+<% end %>

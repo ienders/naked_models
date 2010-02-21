@@ -1,0 +1,32 @@
+<style type = "text/css">
+
+</style>
+
+<table border = "0" cellpadding ="0" cellspacing = "0" class = "outside_border">
+  <% mod.class.columns.reject {|c| c.name.match(/^(id)|(created_at)|(updated_at)|(rgt)|(lft)$/)}.each do |column| %>
+    <tr>
+      <td style = "vertical-align: top; text-align: right;">
+        <%= column.name.titleize %>
+      </td>
+      <td style = "vertical-align: top">
+        <% if column.type == :integer %>
+          <%= f.text_field column.name, :size => 5 %>
+        <% elsif column.type == :datetime %>
+          <%= datetime_select(model_name, column.name, :default => mod.send(column.name)) %>
+        <% elsif column.type == :date %>
+          <%= date_select(model_name, column.name, :default => mod.send(column.name)) %>
+        <% elsif column.type == :text %>
+          <%= f.text_area column.name, :rows => 5, :cols => 30 %>
+        <% elsif column.type == :boolean %>
+          <%= f.check_box column.name %>
+        <% else %>
+          <%= f.text_field column.name %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  <tr>
+    <td></td>
+    <td><%= f.submit 'Submit' %></td>
+  </tr>
+</table>

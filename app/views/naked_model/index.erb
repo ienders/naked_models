@@ -1,0 +1,25 @@
+<h1>
+  Listing <%= @model_name.pluralize.titleize %>
+  <%= link_to "New #{@model_name.titleize}", { :action => 'new' }, :class => 'smaller' %>
+</h1>
+
+<table cellspacing = "0" cellpadding = "0" class = "bordered">
+  <tr>
+    <% @model_klass.columns.each do |col| %>
+      <th><%= col.name %></th>
+    <% end %>
+    <th>Show</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </tr>
+  <% @models.each do |my_model| %>
+    <tr>
+      <% @model_klass.columns.each do |col| %>
+        <td><%= my_model.send(col.name) %></td>
+      <% end %>
+      <td><%= link_to 'Show', :action => 'show', :id => my_model.id %></td>
+      <td><%= link_to 'Edit', :action => 'edit', :id => my_model.id %></td>
+      <td><%= link_to 'Delete', { :action => 'show', :id => my_model.id }, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>

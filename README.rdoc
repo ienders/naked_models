@@ -1,0 +1,63 @@
+Relax.  This plugin should only get you excited if you are really into databases and not writing a lot of code to do stupid stuff that should already be done for you in the first place.  Well, that might be some of you.  Regardless, no naked ladies here.  This plugin/engine lays your models wide open for the world to see.  Totally uncensored.  (Unless you want to censor them that is.)
+
+Step 1) Install this (and Engines and will_paginate).
+Step 2) Create a model.  Say "MyModel".
+Step 3) Create a controller.  Call it "MyModelsController".
+
+  class MyModelsController < NakedModelController
+  end
+  
+Step 4) Put it in your routes and stuff.
+Step 5) Go to this URL:
+
+  /my_models
+  
+Step 6) Make some instances and save them to your database and have fun.  The end.
+
+== What if I want to name my controller something else, or namespace it in some way?
+
+Fine.  Be difficult.  You can override the model_name method in NakedModelController, on an as needed basis.  You could do something like this for example: 
+
+  class Admin::MyModelController < NakedModelController
+  
+    protected
+    def model_name
+      'MyModel'
+    end
+  
+  end
+
+== What if I want to have my naked model pages to be prettier than your ugly-assed tables?
+
+No need to be a jerk.  Add a layout to your controller, and roll your own styling.
+
+== What if I don't want all of my model columns to be visible or modifiable?
+
+Simple enough.  You can add the following configuration to your model.
+
+  class MyModel < ActiveRecord::Base
+  
+    cover_up :my_butt, :my_special_area
+  
+  end
+  
+  
+== What if I have some very nice virtual attributes that I want to display and have added to your reflective forms, that are not backed by actual database values?
+
+Good question.
+
+  class MyModel < ActiveRecord::Base
+  
+    expose :fake_nose
+    
+    def fake_nose
+      nose.prettify
+    end
+    
+    def fake_nose=(val)
+      # toss into the void.
+    end
+  
+  end
+  
+And that's that.  More as it becomes available.
