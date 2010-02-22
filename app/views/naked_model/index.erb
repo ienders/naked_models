@@ -3,6 +3,8 @@
   <%= link_to "New #{@model_name.titleize}", { :action => 'new' }, :class => 'smaller' %>
 </h1>
 
+<%= will_paginate @models %>
+
 <table cellspacing = "0" cellpadding = "0" class = "bordered">
   <tr>
     <% @model_klass.columns.each do |col| %>
@@ -23,3 +25,5 @@
     </tr>
   <% end %>
 </table>
+
+<%= will_paginate @models %>

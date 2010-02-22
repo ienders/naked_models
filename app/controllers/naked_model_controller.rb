@@ -3,7 +3,7 @@ class NakedModelController < ApplicationController
   before_filter :set_model
   
   def index
-    @models = model.all
+    @models = model.paginate(:page => params[:page] || 1, :per_page => params[:per_page] || 100)
     respond_to do |format|
       format.html { render 'naked_model/index' }
       format.xml  { render :xml => @models }
