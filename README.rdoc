@@ -48,7 +48,8 @@ Good question.
 
   class MyModel < ActiveRecord::Base
   
-    expose :fake_nose
+    # Can be called multiple times... takes method name and type.  Type corresponds to column datatypes in migrations, etc.
+    expose :fake_nose, :string
     
     def fake_nose
       nose.prettify
