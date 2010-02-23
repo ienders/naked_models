@@ -37,7 +37,7 @@ class NakedModelController < ApplicationController
       if @model.save
         flash[:message] = "#{@model_name.titleize} was successfully created."
         format.html { redirect_to(:action => 'show', :id => @model.id) }
-        format.xml  { render :xml => @model, :status => :created, :location => @model }
+        format.xml  { render :xml => @model, :status => :created, :location => { :action => 'show', :id => @model.id, :format => 'xml' } }
       else
         format.html { render 'naked_model/new' }
         format.xml  { render :xml => @model.errors, :status => :unprocessable_entity }
@@ -46,6 +46,7 @@ class NakedModelController < ApplicationController
   rescue Exception => ex
     respond_to do |format|
       flash[:warning] = "Unable to create #{@model_name.titleize}.  #{ex.message}"
+      @model.errors.add_to_base(ex.message)
       format.html { render 'naked_model/new' }
       format.xml  { render :xml => @model.errors, :status => :unprocessable_entity }
     end
@@ -66,6 +67,7 @@ class NakedModelController < ApplicationController
   rescue Exception => ex
     respond_to do |format|
       flash[:warning] = "Unable to create #{@model_name.titleize}.  #{ex.message}"
+      @model.errors.add_to_base(ex.message)
       format.html { render 'naked_model/edit' }
       format.xml  { render :xml => @model.errors, :status => :unprocessable_entity }
     end
