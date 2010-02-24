@@ -7,7 +7,7 @@
 
 <table cellspacing = "0" cellpadding = "0" class = "bordered">
   <tr>
-    <% @model_klass.columns.each do |col| %>
+    <% @model_klass.naked_model_read_only_columns.each do |col| %>
       <th><%= col.name %></th>
     <% end %>
     <th>Show</th>
@@ -16,7 +16,7 @@
   </tr>
   <% @models.each do |my_model| %>
     <tr>
-      <% @model_klass.columns.each do |col| %>
+      <% @model_klass.naked_model_read_only_columns.each do |col| %>
         <td><%= my_model.send(col.name) %></td>
       <% end %>
       <td><%= link_to 'Show', :action => 'show', :id => my_model.id %></td>
