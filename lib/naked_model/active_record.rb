@@ -6,7 +6,21 @@ module NakedModel
       class << included_into; attr_accessor :naked_models_covered_up_columns; end
       class << included_into; attr_accessor :naked_models_exposed_columns; end
       class << included_into; attr_accessor :naked_models_readonly_columns; end
+      
+      included_into.class_eval do
+        # Intercept to_xml and add options based on Naked Model configuration.
+        alias_method_chain :to_xml, :naked_opts
+      end
     end
+    
+    def to_xml_with_naked_opts(options = {})
+      naked_opts = {}
+      naked_opts[:include] = (self.class.naked_models_exposed_columns || []).collect {|c| c.name.to_sym }
+      naked_opts[:except] = (self.class.naked_models_covered_up_columns || []).collect {|c| c.to_sym }
+      logger.debug("to_xml_with_naked_opts = #{naked_opts.merge(options).inspect}")
+      to_xml_without_naked_opts(naked_opts.merge(options))
+    end
+
   end
 
   module ClassMethods

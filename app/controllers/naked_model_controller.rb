@@ -45,7 +45,7 @@ class NakedModelController < ApplicationController
     end
   rescue Exception => ex
     respond_to do |format|
-      flash[:warning] = "Unable to create #{@model_name.titleize}.  #{ex.message}"
+      @model ||= model.new()
       @model.errors.add_to_base(ex.message)
       format.html { render 'naked_model/new' }
       format.xml  { render :xml => @model.errors, :status => :unprocessable_entity }
@@ -66,7 +66,6 @@ class NakedModelController < ApplicationController
     end
   rescue Exception => ex
     respond_to do |format|
-      flash[:warning] = "Unable to create #{@model_name.titleize}.  #{ex.message}"
       @model.errors.add_to_base(ex.message)
       format.html { render 'naked_model/edit' }
       format.xml  { render :xml => @model.errors, :status => :unprocessable_entity }
