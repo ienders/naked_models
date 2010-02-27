@@ -17,8 +17,12 @@ module NakedModel
       naked_opts = {}
       naked_opts[:include] = (self.class.naked_models_exposed_columns || []).collect {|c| c.name.to_sym }
       naked_opts[:except] = (self.class.naked_models_covered_up_columns || []).collect {|c| c.to_sym }
-      logger.debug("to_xml_with_naked_opts = #{naked_opts.merge(options).inspect}")
-      to_xml_without_naked_opts(naked_opts.merge(options))
+      if options[:builder] # Not root
+        opts = options.merge(naked_opts)
+      else # Root, let conf come in options.
+        opts = naked_opts.merge(options)        
+      end
+      to_xml_without_naked_opts(opts)
     end
 
   end
