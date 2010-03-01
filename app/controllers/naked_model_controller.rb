@@ -39,6 +39,7 @@ class NakedModelController < ApplicationController
         format.html { redirect_to(:action => 'show', :id => @model.id) }
         format.xml  { render :xml => @model, :status => :created, :location => { :action => 'show', :id => @model.id, :format => 'xml' } }
       else
+        logger.error "Model has errors: #{@model.errors}"
         format.html { render 'naked_model/new' }
         format.xml  { render :xml => @model.errors, :status => :unprocessable_entity }
       end
@@ -47,6 +48,7 @@ class NakedModelController < ApplicationController
     respond_to do |format|
       @model ||= model.new()
       @model.errors.add_to_base(ex.message)
+      logger.error "Model has errors: #{@model.errors}"
       format.html { render 'naked_model/new' }
       format.xml  { render :xml => @model.errors, :status => :unprocessable_entity }
     end
@@ -60,6 +62,7 @@ class NakedModelController < ApplicationController
         format.html { redirect_to(:action => 'show', :id => @model.id) }
         format.xml  { head :ok }
       else
+        logger.error "Model has errors: #{@model.errors}"
         format.html { render 'naked_model/edit' }
         format.xml  { render :xml => @model.errors, :status => :unprocessable_entity }
       end
@@ -67,6 +70,7 @@ class NakedModelController < ApplicationController
   rescue Exception => ex
     respond_to do |format|
       @model.errors.add_to_base(ex.message)
+      logger.error "Model has errors: #{@model.errors}"
       format.html { render 'naked_model/edit' }
       format.xml  { render :xml => @model.errors, :status => :unprocessable_entity }
     end
