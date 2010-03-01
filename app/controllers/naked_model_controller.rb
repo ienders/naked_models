@@ -3,7 +3,7 @@ class NakedModelController < ApplicationController
   before_filter :set_model
   
   def index
-    @models = model.with_exclusive_scope { paginate(:page => params[:page] || 1, :per_page => params[:per_page] || 100) }
+    @models = model.send(:with_exclusive_scope) { paginate(:page => params[:page] || 1, :per_page => params[:per_page] || 100) }
     respond_to do |format|
       format.html { render 'naked_model/index' }
       format.xml  { render :xml => @models }
@@ -11,7 +11,7 @@ class NakedModelController < ApplicationController
   end
 
   def show
-    @model = model.with_exclusive_scope { find(params[:id]) }
+    @model = model.send(:with_exclusive_scope) { find(params[:id]) }
     respond_to do |format|
       format.html { render 'naked_model/show' }
       format.xml  { render :xml => @model }
@@ -27,7 +27,7 @@ class NakedModelController < ApplicationController
   end
 
   def edit
-    @model = model.with_exclusive_scope { find(params[:id]) }
+    @model = model.send(:with_exclusive_scope) { find(params[:id]) }
     render 'naked_model/edit'
   end
 
@@ -55,7 +55,7 @@ class NakedModelController < ApplicationController
   end
 
   def update
-    @model = model.with_exclusive_scope  { find(params[:id]) }
+    @model = model.send(:with_exclusive_scope)  { find(params[:id]) }
     respond_to do |format|
       if @model.update_attributes(params[model_sym])
         flash[:message] = "#{@model_name.titleize} was successfully updated."
@@ -77,7 +77,7 @@ class NakedModelController < ApplicationController
   end
 
   def destroy
-    @model = model.with_exclusive_scope  { find(params[:id]) }
+    @model = model.send(:with_exclusive_scope)  { find(params[:id]) }
     @model.destroy
     respond_to do |format|
       format.html { redirect_to(:action => 'index') }
