@@ -16,6 +16,16 @@ class NakedModelController < ApplicationController
       format.html { render 'naked_model/show' }
       format.xml  { render :xml => @model }
     end
+  rescue ActiveRecord::RecordNotFound => ex
+    @model = model.new()
+    @model.errors.add_to_base(ex.message)
+    respond_to do |format|
+      format.html {
+        flash[:message] = ex.message
+        redirect_to(:action => 'index')
+      }
+      format.xml  { render :xml => @model.errors, :status => :not_found }
+    end
   end
 
   def new
