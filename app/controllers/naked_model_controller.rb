@@ -54,14 +54,14 @@ class NakedModelController < ApplicationController
         format.xml  { render :xml => @model.errors, :status => :unprocessable_entity }
       end
     end
-  rescue Exception => ex
-    respond_to do |format|
-      @model ||= model.new()
-      @model.errors.add_to_base(ex.message)
-      logger.error "Model has errors: #{@model.errors.inspect}"
-      format.html { render 'naked_model/new' }
-      format.xml  { render :xml => @model.errors, :status => :unprocessable_entity }
-    end
+  # rescue Exception => ex
+  #   respond_to do |format|
+  #     @model ||= model.new()
+  #     @model.errors.add_to_base(ex.message)
+  #     logger.error "Model has errors: #{@model.errors.inspect}"
+  #     format.html { render 'naked_model/new' }
+  #     format.xml  { render :xml => @model.errors, :status => :unprocessable_entity }
+  #   end
   end
 
   def update
