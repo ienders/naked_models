@@ -1,3 +1,9 @@
+class String
+  def to_xml(opts = {})
+    to_s
+  end
+end
+
 module NakedModel
   
   module ActiveRecord
@@ -15,7 +21,10 @@ module NakedModel
     
     def to_xml_with_naked_opts(options = {})
       naked_opts = {}
-      naked_opts[:include] = (self.class.naked_models_exposed_columns || []).collect {|c| c.name.to_sym }
+      includes = (self.class.naked_models_exposed_columns || []).select { |c| c.type.to_sym == :has_many || c.type.to_sym == :has_one }
+      methods  = (self.class.naked_models_exposed_columns || []).select { |c| c.type.to_sym != :has_many && c.type.to_sym != :has_one }
+      naked_opts[:include] = includes.collect {|c| c.name.to_sym }
+      naked_opts[:methods] = methods.collect {|c| c.name.to_sym }
       naked_opts[:except] = (self.class.naked_models_covered_up_columns || []).collect {|c| c.to_sym }
       if options[:builder] # Not root
         opts = options.merge(naked_opts)
