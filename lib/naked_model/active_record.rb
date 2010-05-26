@@ -1,9 +1,3 @@
-class String
-  def to_xml(opts = {})
-    to_s
-  end
-end
-
 module NakedModel
   
   module ActiveRecord
