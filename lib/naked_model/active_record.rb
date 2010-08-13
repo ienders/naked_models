@@ -3,6 +3,7 @@ module NakedModel
   module ActiveRecord
     def self.included(included_into)
       included_into.extend(ClassMethods)
+      class << included_into; attr_accessor :naked_models_root_name_override; end
       class << included_into; attr_accessor :naked_models_covered_up_columns; end
       class << included_into; attr_accessor :naked_models_exposed_columns; end
       class << included_into; attr_accessor :naked_models_readonly_columns; end
@@ -17,6 +18,11 @@ module NakedModel
       naked_opts = {}
       includes = (self.class.naked_models_exposed_columns || []).select { |c| c.type.to_sym == :has_many || c.type.to_sym == :has_one }
       methods  = (self.class.naked_models_exposed_columns || []).select { |c| c.type.to_sym != :has_many && c.type.to_sym != :has_one }
+      
+      if self.class.naked_models_root_name_override
+        naked_opts[:root] = self.class.naked_models_root_name_override
+      end
+      
       naked_opts[:include] = includes.collect {|c| c.name.to_sym }
       naked_opts[:methods] = methods.collect {|c| c.name.to_sym }
       naked_opts[:except] = (self.class.naked_models_covered_up_columns || []).collect {|c| c.to_sym }
@@ -43,6 +49,10 @@ module NakedModel
       cols = self.columns + exposed
       cols.reject! {|c| covered.include?(c.name) }
       cols
+    end
+    
+    def xml_root_name(name)
+      self.naked_models_root_name_override = name
     end
     
     def cover_up(*methods)
